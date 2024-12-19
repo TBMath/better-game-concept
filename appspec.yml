@@ -1,0 +1,19 @@
+version: 0.0
+os: linux
+files:
+  - source: /backend
+    destination: /better-game-concept/backend
+
+hooks:
+  BeforeInstall:
+    - location: scripts/stop_app.sh
+      timeout: 180
+      runas: ec2-user
+  AfterInstall:
+    - location: scripts/git_pull_and_install.sh
+      timeout: 180
+      runas: ec2-user
+  ApplicationStart:
+    - location: scripts/start_app.sh
+      timeout: 180
+      runas: ec2-user
