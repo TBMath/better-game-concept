@@ -11,7 +11,7 @@ app.use(cors({
   }));
 // Example API route
 app.get("/api", (req, res) => {
-  res.json({ message: "wowooyy" });
+  res.json({ message: "this is a test" });
 });
 
 
