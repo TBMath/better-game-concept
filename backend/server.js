@@ -15,6 +15,6 @@ app.get("/api", (req, res) => {
 });
 
 
-app.listen(port, () => {
-  console.log(`Backend running at http://localhost:${port}`);
+app.listen(5000, '0.0.0.0', () => {
+  console.log('Backend running at http://0.0.0.0:5000');
 });
