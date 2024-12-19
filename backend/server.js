@@ -11,8 +11,9 @@ app.use(cors({
   }));
 // Example API route
 app.get("/api", (req, res) => {
-  res.json({ message: "Hello from Express!j" });
+  res.json({ message: "wowooyy" });
 });
+
 
 app.listen(port, () => {
   console.log(`Backend running at http://localhost:${port}`);
