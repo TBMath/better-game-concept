@@ -8,7 +8,7 @@ const port = 5000;
 
 // Example API route
 app.get("/api", (req, res) => {
-  res.json({ message: "if your seeing this it worked" });
+  res.json({ message: "better work" });
 });
 
 
