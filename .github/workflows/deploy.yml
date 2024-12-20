@@ -3,11 +3,11 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # or the branch you want to deploy from
+      - main  # The branch you want to deploy from
 
 jobs:
   deploy:
-    runs-on: linux
+    runs-on: ubuntu-latest  # Or use `linux` if you want, but `ubuntu-latest` is more common
 
     steps:
       # Checkout the code
@@ -24,9 +24,14 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-107-189-224.ap-southeast-2.compute.amazonaws.com << 'EOF'
-            cd better-game-concept
+            # Navigate to the project directory
+            cd /path/to/your/project/directory
+            # Pull the latest changes from GitHub
             git pull origin main
+            # Navigate to the backend folder
             cd backend
+            # Install dependencies (make sure npm is installed on Amazon Linux)
             npm install
+            # Restart the server using pm2 (ensure pm2 is installed on Amazon Linux)
             pm2 restart server.js
           EOF
