@@ -6,12 +6,9 @@ const port = 5000;
 
 // Enable CORS for the frontend
 
-app.use(cors({
-    origin: "http://localhost:3000", // The frontend's URL
-  }));
 // Example API route
 app.get("/api", (req, res) => {
-  res.json({ message: "this is a test" });
+  res.json({ message: "if your seeing this it worked" });
 });
 
 
