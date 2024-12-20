@@ -25,13 +25,19 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-107-189-224.ap-southeast-2.compute.amazonaws.com << 'EOF'
             # Navigate to the project directory
-            cd better-game-concept
+            cd better-game-concept  
+            pm2 stop server.js
+            pm2 delete server.js
+            pm2 save
+            cd ..
+            rm -rf better-game-concept
             # Pull the latest changes from GitHub
-            git pull origin main
+            git clone https://github.com/TBMath/better-game-concept.git
             # Navigate to the backend folder
-            cd backend
+            cd better-game-concept/backend
             # Install dependencies (make sure npm is installed on Amazon Linux)
             npm install
             # Restart the server using pm2 (ensure pm2 is installed on Amazon Linux)
-            pm2 restart server.js
+            pm2 start server.js
+            pm2 save
           EOF
