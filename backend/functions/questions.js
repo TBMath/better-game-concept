@@ -1,21 +1,33 @@
-// /c:/Users/mukta/OneDrive/Desktop/better-game-concept/backend/functions/questions.js
+import clientPromise from '../utils/mongodb.js';
 
-// Function to get a random question from a list of questions
-function getRandomQuestion(questions) {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    return questions[randomIndex];
+async function getQuestion(_, res) {
+  const client = await clientPromise;
+  const db = client.db("questions");
+  const questions = db.collection("the questions");
+  const result = await questions.find({}).toArray();
+  return res.json(result);
 }
 
-// Example usage
-const questions = [
-    "What is the capital of France?",
-    "What is 2 + 2?",
-    "Who wrote 'To Kill a Mockingbird'?",
-    "What is the boiling point of water?"
-];
+async function getQuestionbyIndex(req, res) {
+  const client = await clientPromise;
+  const db = client.db("questions");
+  const questions = db.collection("the questions");
+  var result = await questions.findOne({ index: parseInt(req.params.id) });
+  if (result == null) {
+    result = { message: "No question with that index" };
+  }
+  return res.json(result);
+}
 
-console.log(getRandomQuestion(questions));
+async function createQuestion(req, res) {
+  const client = await clientPromise;
+  const db = client.db("questions");
+  const questions = db.collection("the questions");
+  const result = await questions.insertOne(req.body);
+ 
+  
+  return res.json(result);
+  
+}
 
-module.exports = {
-    getRandomQuestion
-};
+export { getQuestion, getQuestionbyIndex, createQuestion };
