@@ -27,27 +27,38 @@ jobs:
             # Navigate to the project directory
             cd better-game-concept 
             cd backend 
+
             # Stop the server using pm2
-            pm2 stop server.js
-            # Delete the server process from pm2
-            pm2 delete server.js
-            # Save the pm2 process list
+            pm2 stop server.js || true
+            pm2 delete server.js || true
             pm2 save
+
             # Navigate back to the root directory
             cd .. && cd ..
+
             # Remove the existing project directory
             rm -rf better-game-concept
+
             # Pull the latest changes from GitHub
             git clone https://github.com/TBMath/better-game-concept.git
+
             # Navigate to the backend folder
             cd better-game-concept
             cd backend
+
             # Install dependencies
             npm install
-            # Restart the server using pm2
-            pm2 start server.js
+
+            # Ensure the server starts on port 3000
+            pm2 start server.js --name backend --watch -- --port 3000
+
             # Save the pm2 process list
             pm2 save
+
+            # Ensure Nginx is configured to proxy to port 3000
+            # Check the Nginx configuration (this assumes your config is in /etc/nginx/nginx.conf)
+            sudo sed -i 's/listen 80;/listen 80;\n    location \/ {\n        proxy_pass http:\/\/localhost:3000;\n    }/' /etc/nginx/nginx.conf
+
             # Restart Nginx to apply any configuration changes
             sudo systemctl reload nginx
           EOF
