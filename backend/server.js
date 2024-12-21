@@ -1,24 +1,18 @@
 import express from "express";
 import cors from "cors";
-import https from "https";
-import fs from "fs";
+import logRequest from "./middleware/logger.js";
+import router from "./routes/index.js";
 const app = express();
-const port = 443;
+const port = 3000;
 
 // Enable CORS for the frontend
 app.use(cors());
+app.use(logRequest);
+app.use('/api', router);
 
-// Example API route
-app.get("/api", (_, res) => {
-  res.json({ message: "your a genius" });
-});
+app.get('/api', (req, res) => {res.json({ message: 'You have connected to the API' });});
 
-// SSL certificate and key
-const options = {
-  key: fs.readFileSync("private.key"),
-  cert: fs.readFileSync("certificate.crt")
-};
-
-https.createServer(options, app).listen(port, '0.0.0.0', () => {
-  console.log(`Backend running at https://0.0.0.0:${port}`);
+app.use(cors());
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Backend running at http://0.0.0.0:${port}`);
 });

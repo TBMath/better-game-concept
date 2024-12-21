@@ -3,44 +3,51 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # The branch you want to deploy from
+      - main
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # Or use `linux` if you want, but `ubuntu-latest` is more common
+    runs-on: ubuntu-latest
 
     steps:
       # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up SSH
+      # Set up SSH agent
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      # Run deployment script
+      # Deploy to EC2
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-107-189-224.ap-southeast-2.compute.amazonaws.com << 'EOF'
+          ssh -o StrictHostKeyChecking=no ec2-user@your-ec2-public-dns << 'EOF'
             # Navigate to the project directory
             cd better-game-concept 
             cd backend 
+            # Stop the server using pm2
             pm2 stop server.js
+            # Delete the server process from pm2
             pm2 delete server.js
+            # Save the pm2 process list
             pm2 save
-            cd ..
-            cd ..
+            # Navigate back to the root directory
+            cd .. && cd ..
+            # Remove the existing project directory
             rm -rf better-game-concept
             # Pull the latest changes from GitHub
             git clone https://github.com/TBMath/better-game-concept.git
             # Navigate to the backend folder
             cd better-game-concept
             cd backend
-            # Install dependencies (make sure npm is installed on Amazon Linux)
+            # Install dependencies
             npm install
-            # Restart the server using pm2 (ensure pm2 is installed on Amazon Linux)
+            # Restart the server using pm2
             pm2 start server.js
+            # Save the pm2 process list
             pm2 save
+            # Restart Nginx to apply any configuration changes
+            sudo systemctl reload nginx
           EOF
