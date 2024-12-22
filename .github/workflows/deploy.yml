@@ -57,7 +57,7 @@ jobs:
 
             # Ensure Nginx is configured to proxy to port 3000
             # Check the Nginx configuration (this assumes your config is in /etc/nginx/nginx.conf)
-            sudo sed -i 's/listen 80;/listen 80;\n    location \/ {\n        proxy_pass http:\/\/localhost:3000;\n    }/' /etc/nginx/nginx.conf
+            
 
             
           EOF
