@@ -59,6 +59,5 @@ jobs:
             # Check the Nginx configuration (this assumes your config is in /etc/nginx/nginx.conf)
             sudo sed -i 's/listen 80;/listen 80;\n    location \/ {\n        proxy_pass http:\/\/localhost:3000;\n    }/' /etc/nginx/nginx.conf
 
-            # Restart Nginx to apply any configuration changes
-            sudo systemctl reload nginx
+            
           EOF
