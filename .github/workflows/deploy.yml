@@ -49,7 +49,7 @@ jobs:
 
             # Install dependencies
             npm install
-            
+
             # Ensure the server starts on port 5000
             pm2 start server.js --name backend --watch
 
