@@ -50,7 +50,7 @@ jobs:
             npm install
 
             # Ensure the server starts on port 3000
-            pm2 start server.js --name backend --watch -- --port 3000
+            pm2 start server.js --name backend --watch -- --port 5000
 
             # Save the pm2 process list
             pm2 save
