@@ -1,3 +1,4 @@
+# FILE: .github/workflows/deploy.yml
 name: Deploy to EC2
 
 on:
@@ -49,15 +50,11 @@ jobs:
             # Install dependencies
             npm install
 
-            # Ensure the server starts on port 3000
-            pm2 start server.js --name backend --watch -- --port 5000
+            # Ensure the server starts on port 5000
+            pm2 start server.js --name backend --watch
 
             # Save the pm2 process list
             pm2 save
 
-            # Ensure Nginx is configured to proxy to port 3000
-            # Check the Nginx configuration (this assumes your config is in /etc/nginx/nginx.conf)
-            
-
-            
+            # Ensure Nginx is configured to proxy to port 5000
           EOF

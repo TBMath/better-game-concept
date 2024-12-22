@@ -10,7 +10,7 @@ app.use(cors());
 app.use(logRequest);
 app.use('/api', router);
 
-app.get('/api', (req, res) => {res.json({ message: 'You have connected to the API' });});
+app.get('/api', (_, res) => {res.json({ message: 'You have connected to the API' });});
 
 app.use(cors());
 app.listen(port,'0.0.0.0', () => {
