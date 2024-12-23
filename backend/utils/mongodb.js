@@ -4,7 +4,6 @@ const options = {
     ssl: true,
     tls: true,
     tlsAllowInvalidCertificates: false,
-    tlsInsecure: false,
     useUnifiedTopology: true,
   };
 const client = new MongoClient(uri,options);
