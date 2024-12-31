@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import dotenv from 'dotenv'; // Import the dotenv module
+dotenv.config(); // Load environment variables from .env file
 // Configure AWS SDK
 AWS.config.update({
     accessKeyId: process.env.ACCESSKEYID, // Use the environment variables
