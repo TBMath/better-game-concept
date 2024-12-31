@@ -1,18 +1,26 @@
 // app/page.js (Server Component with SSR)
+'use client'
 import React from 'react';
 
-async function fetchMessage() {
-  const response = await fetch('http://ec2-3-107-189-224.ap-southeast-2.compute.amazonaws.com/api/questions/');
-  const data = await response.json();
-  return data.message; // Assuming the response contains a 'question' field
-}
+import { useEffect, useState } from 'react';
 
-const Home = async () => {
-  const message = await fetchMessage(); // This runs on the server
+const Home = () => {
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    const fetchMessage = async () => {
+      const response = await fetch('/api');
+      const data = await response.json();
+      setMessage(data.message); // Assuming the response contains a 'question' field
+    };
+
+    fetchMessage();
+  }, []);
 
   return (
     <div>
       <h1>Message from Backend: {message}</h1>
+      
     </div>
   );
 };
