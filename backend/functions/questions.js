@@ -1,4 +1,5 @@
 import AWS from '../utils/aws-config.js'// Import the AWS SDK
+import express from 'express';
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 async function getQuestion(_, res) {
@@ -18,17 +19,42 @@ async function getQuestion(_, res) {
         });
     }
 }
+async function getQuestionbyID(req, res) {
+    const params = {
+        TableName: "QuestionsTable", // Ensure the table name is correct
+    };
+
+    try {
+        // Using await to handle the asynchronous scan operation
+        const data = await docClient.scan(params).promise();
+        res.status(200).send(data.Items[0]); // Send the retrieved data as the response
+    } catch (err) {
+        // Handle any errors from the scan operation
+        res.status(400).send({
+            error: "Error fetching questions from DynamoDB",
+            details: err.message, // Return the error details in the response
+        });
+    }
+}
+
 async function createQuestion(req, res) {
-    const { question, answer } = req.body; // Extract the question and answer from the request body
+    const { index, answer, hint1, hint2, hint3, l1, l2, l3, l4, l5, l6, l7, l8 } = req.body; // Extract the question and answer from the request body
     const params = {
         TableName: "QuestionsTable", // Ensure the table name is correct
         Item: {
             index: index,
-            question_id: question_id,
             answer: answer,
             hint1: hint1,
             hint2: hint2,
             hint3: hint3,
+            l1: l1,
+            l2: l2,
+            l3: l3,
+            l4: l4,
+            l5: l5,
+            l6: l6,
+            l7: l7,
+            l8: l8,
         },
     };
 
@@ -45,4 +71,8 @@ async function createQuestion(req, res) {
     }
 }
 
-export { getQuestion };
+
+
+
+
+export { getQuestion, createQuestion, getQuestionbyID };

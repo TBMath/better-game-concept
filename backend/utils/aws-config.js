@@ -1,10 +1,11 @@
 import AWS from 'aws-sdk';
+
 // Import the dotenv module
  // Load environment variables from .env file
 // Configure AWS SDK
 AWS.config.update({
-    accessKeyId: process.env.ACCESSKEYID, // Use the environment variables
-    secretAccessKey: process.env.SECRETACCESSKEY,
+    accessKeyId: 'AKIA4T4OCBRAS6OUPJWO', // Use the environment variables
+    secretAccessKey: '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',
     region: 'ap-southeast-2'
 });
 

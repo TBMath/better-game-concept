@@ -5,13 +5,13 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 
 const Home = () => {
-  const [message, setMessage] = useState('');
-
+  const [message, setMessage] = useState([]);
+  
   useEffect(() => {
     const fetchMessage = async () => {
-      const response = await fetch('/api');
+      const response = await fetch('/api/questions/get');
       const data = await response.json();
-      setMessage(data.message); // Assuming the response contains a 'question' field
+      setMessage(data.Items); // Assuming the response contains a 'question' field
     };
 
     fetchMessage();
@@ -19,7 +19,11 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Message from Backend: {message}</h1>
+      <h1>Message from Backend:</h1>
+      {message.length > 0 && (
+        <div>{message[0].answer}</div>
+      )}
+     
       
     </div>
   );
