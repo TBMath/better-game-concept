@@ -1,5 +1,9 @@
-import AWS from '../utils/aws-config.js'// Import the AWS SDK
-import express from 'express';
+import AWS from '../utils/aws-config.js'; // Import the AWS SDK
+import express from 'express'; // Import express
+
+const app = express();
+app.use(express.json()); // Middleware to parse JSON request bodies
+
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 async function getQuestion(_, res) {
@@ -8,71 +12,72 @@ async function getQuestion(_, res) {
     };
 
     try {
-        // Using await to handle the asynchronous scan operation
         const data = await docClient.scan(params).promise();
-        res.status(200).send(data); // Send the retrieved data as the response
+        res.status(200).send(data.Items);
     } catch (err) {
-        // Handle any errors from the scan operation
         res.status(400).send({
             error: "Error fetching questions from DynamoDB",
-            details: err.message, // Return the error details in the response
+            details: err.message,
         });
     }
 }
+
 async function getQuestionbyID(req, res) {
     const params = {
-        TableName: "QuestionsTable", // Ensure the table name is correct
+        TableName: "QuestionsTable",
+        Key: {
+            index: req.params.id,
+        },
     };
 
     try {
-        // Using await to handle the asynchronous scan operation
-        const data = await docClient.scan(params).promise();
-        res.status(200).send(data.Items[0]); // Send the retrieved data as the response
+        const data = await docClient.get(params).promise();
+        if (data.Item) {
+            res.status(200).send(data.Item);
+        } else {
+            res.status(404).send({ error: "Question not found" });
+        }
     } catch (err) {
-        // Handle any errors from the scan operation
         res.status(400).send({
-            error: "Error fetching questions from DynamoDB",
-            details: err.message, // Return the error details in the response
+            error: "Error fetching question from DynamoDB",
+            details: err.message,
         });
     }
 }
 
 async function createQuestion(req, res) {
-    const { index, answer, hint1, hint2, hint3, l1, l2, l3, l4, l5, l6, l7, l8 } = req.body; // Extract the question and answer from the request body
+    console.log(req.body); // Log the request body to debug
+
+    const { index, answer, hint1, hint2, hint3, l1, l2, l3, l4, l5, l6, l7, l8 } = req.body;
+
     const params = {
-        TableName: "QuestionsTable", // Ensure the table name is correct
+        TableName: "QuestionsTable",
         Item: {
-            index: index,
-            answer: answer,
-            hint1: hint1,
-            hint2: hint2,
-            hint3: hint3,
-            l1: l1,
-            l2: l2,
-            l3: l3,
-            l4: l4,
-            l5: l5,
-            l6: l6,
-            l7: l7,
-            l8: l8,
+            index,
+            answer,
+            hint1,
+            hint2,
+            hint3,
+            l1,
+            l2,
+            l3,
+            l4,
+            l5,
+            l6,
+            l7,
+            l8,
         },
     };
 
     try {
-        // Using await to handle the asynchronous put operation
         await docClient.put(params).promise();
-        res.status(201).send({ message: "Question created successfully" }); // Send a success message
+        res.status(201).send({ message: "Question created successfully" });
     } catch (err) {
-        // Handle any errors from the put operation
         res.status(400).send({
             error: "Error creating question in DynamoDB",
-            details: err.message, // Return the error details in the response
+            details: err.message,
         });
     }
 }
 
-
-
-
-
-export { getQuestion, createQuestion, getQuestionbyID };
+export { createQuestion, getQuestion, getQuestionbyID };
