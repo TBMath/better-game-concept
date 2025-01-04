@@ -46,9 +46,10 @@ async function getQuestionbyID(req, res) {
 }
 
 async function createQuestion(req, res) {
-    console.log(req.body); // Log the request body to debug
+    console.log(req.body)
+    const {index, answer, hint1, hint2, hint3, l1, l2, l3, l4, l5,l6, l7, l8} = req.body;
 
-    const { index, answer, hint1, hint2, hint3, l1, l2, l3, l4, l5, l6, l7, l8 } = req.body;
+    
 
     const params = {
         TableName: "QuestionsTable",
@@ -66,6 +67,7 @@ async function createQuestion(req, res) {
             l6,
             l7,
             l8,
+           
         },
     };
 

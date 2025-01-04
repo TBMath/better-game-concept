@@ -26,7 +26,7 @@ const CreateQuestion = () => {
        
         try {
             
-            const response = await fetch("http://ec2-3-107-189-224.ap-southeast-2.compute.amazonaws.com/", {
+            const response = await fetch("http://localhost:5000/api/questions/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
